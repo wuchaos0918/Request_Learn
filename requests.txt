@@ -1,0 +1,73 @@
+需要安装requests库
+pip install requests
+
+1.发送request请求
+常用的4个requests函数：
+requests.get(url,params=None,**kwargs)
+requests.post(url,data=None, json=None,**kwargs)
+data和json的区别：取决于需要传递的参数类型
+files   文件上传
+form-data   表单和文件上传
+x-www-from-urlencoded   纯表单
+raw:json    参数为json
+binary      把文件转化成二进制传输
+
+requests.put(url,data=None,**kwargs)
+requests.delete(url,**kwargs)
+
+以上4个函数都是调用下面的函数：
+requests.request(method,url,**kwargs)
+
+requests.request函数调用的是下面的函数（区别在于，session.request函数能自动关联有cookie关联的接口）
+session.request(method=method,url=url,**kwargs)
+method=method   请求方式
+url=url         请求路径
+params=None     get请求传参
+data=None       post或put请求传参
+headers=None    请求头
+cookies=None    Cookie
+files=None      文件上传
+————————————————————————————————————
+auth=None       鉴权
+timeout=None    超时处理
+allow_redirects=True    是否允许重定向
+proxies=None    设置代理
+hooks=None      钩子
+stream=None     文件下载
+verify=None     证书验证
+cert=None       CA证书
+json=None       post请求传参
+
+生成一个session对象
+requests.session（）
+
+2.接收响应
+print(res.text)                 返回的文本信息
+print(res.json())               返回的json格式
+print(res.content)              返回的字节内容
+print(res.status_code)          返回的状态码
+print(res.reason)               返回的状态信息
+print(res.cookies)              返回的cookie
+print(res.encoding)             返回编码格式
+print(res.headers)              返回请求头
+print(res.request.请求数据)       返回请求数据
+
+
+# 面试题：接口自动化实现接口关联的三种方式以及提取变量的两种方式
+# 实现接口关联的三种方式
+# 1.通过类变量保存中间变量实现接口关联
+# 2.通过单独的文件保存中间变量实现接口关联
+# 3.极限封装成和工具一样，只需要通过表达式就可以实现接口关联
+
+提取变量的两种方式：
+1.正则表达式提取（适用于提取文本结果）：
+2.JsonPath提取（适用于提取json结果）：返回的是一个列表
+    jsonpath表达式的规则：
+    $   根节点
+    .   子节点   $.access_token
+    ..  递归取子节点
+    []  代表取列表中的值，下表从0开始
+
+result = res.json()
+valve = jsonpath.jsonpath(result,"$.access_token")
+TestApi.access_token = value[0]
