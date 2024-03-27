@@ -61,6 +61,12 @@ print(res.request.请求数据)       返回请求数据
 
 提取变量的两种方式：
 1.正则表达式提取（适用于提取文本结果）：
+    re.search()      提取一个值，通过下标取值
+res = requests.get(url)
+result = res.text
+csrf_token = re.search('name="csrf_token" value="(.*?)"',result).group(1)
+
+    re.findall()    提取多个值，通过下标取值
 2.JsonPath提取（适用于提取json结果）：返回的是一个列表
     jsonpath表达式的规则：
     $   根节点
@@ -68,6 +74,7 @@ print(res.request.请求数据)       返回请求数据
     ..  递归取子节点
     []  代表取列表中的值，下表从0开始
 
+res = requests.get(url)
 result = res.json()
 valve = jsonpath.jsonpath(result,"$.access_token")
 TestApi.access_token = value[0]
